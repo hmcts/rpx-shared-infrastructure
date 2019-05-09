@@ -1,0 +1,6 @@
+external_hostname = "apply-for-probate.service.gov.uk"
+external_cert_name = "apply-for-probate-service-gov-uk"
+external_cert_vault_uri = "https://infra-vault-prod.vault.azure.net/"
+external_hostname_gateway = "www.apply-for-probate.service.gov.uk"
+external_hostname_www = "www.apply-for-probate.platform.hmcts.net"
+external_hostname_www_caveats = "www.apply-for-caveats.service.gov.uk"

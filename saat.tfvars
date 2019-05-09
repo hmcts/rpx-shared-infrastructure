@@ -1,0 +1,7 @@
+asp_capacity = "1"
+external_hostname = "probate.saat.platform.hmcts.net"
+external_cert_name = "STAR-saat-platform-hmcts-net"
+external_cert_vault_uri = "https://infra-vault-sandbox.vault.azure.net/"
+external_hostname_gateway = "service-probate.saat.platform.hmcts.net"
+external_hostname_www = "www-probate.saat.platform.hmcts.net"
+external_hostname_www_caveats = "probate-caveats.saat.platform.hmcts.net"
