@@ -12,7 +12,7 @@ data "azurerm_subnet" "ase_subnet" {
 
 
 locals {
-  probate_frontend_internal_hostname  = "${var.product}-frontend-${var.env}.service.core-compute-${var.env}.internal"
+  rpx_frontend_internal_hostname  = "${var.product}-frontend-${var.env}.service.core-compute-${var.env}.internal"
   caveats_internal_hostname = "${var.product}-caveats-fe-${var.env}.service.core-compute-${var.env}.internal"
 }
 
@@ -104,7 +104,7 @@ module "appGw" {
       name = "${var.product}-${var.env}-backend-pa-pool"
       backendAddresses = [
         {
-          ipAddress = "${local.probate_frontend_internal_hostname}"
+          ipAddress = "${local.rpx_frontend_internal_hostname}"
         },
       ]
     },

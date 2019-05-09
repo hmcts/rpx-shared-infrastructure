@@ -1,6 +1,6 @@
 variable "product" {
   type = "string"
-  default = "probate"
+  default = "rpx"
 }
 
 variable "location" {
@@ -45,7 +45,7 @@ variable "mgmt_subscription_id" {}
 
 variable "productName" {
   type    = "string"
-  default = "probate-frontend"
+  default = "rpx-frontend"
 }
 
 variable "asp_capacity" {
@@ -65,13 +65,13 @@ variable "external_hostname" {}
 variable "team_name" {
   type        = "string"
   description = "The name of your team"
-  default     = "Probate"
+  default     = "Expert UI"
 }
 
 variable "team_contact" {
   type        = "string"
   description = "The name of your Slack channel people can use to contact your team about your infrastructure"
-  default     = "#probate-jenkins"
+  default     = "#rpx-jenkins"
 }
 
 variable "destroy_me" {

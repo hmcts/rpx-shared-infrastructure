@@ -1,6 +1,6 @@
-module "probate-vault" {
+module "rpx-vault" {
   source = "git@github.com:contino/moj-module-key-vault?ref=master"
-  name = "probate-${var.env}"
+  name = "rpx-${var.env}"
   product = "${var.product}"
   env = "${var.env}"
   tenant_id = "${var.tenant_id}"
@@ -11,5 +11,5 @@ module "probate-vault" {
 }
 
 output "vaultName" {
-  value = "${module.probate-vault.key_vault_name}"
+  value = "${module.rpx-vault.key_vault_name}"
 }

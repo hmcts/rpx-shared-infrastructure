@@ -2,6 +2,6 @@
 //noinspection GroovyUnusedAssignment
 @Library("Infrastructure") _
 
-withInfraPipeline('probate') {
-  enableSlackNotifications('#probate-jenkins')
+withInfraPipeline('rpx') {
+  enableSlackNotifications('#rpx-jenkins')
 }

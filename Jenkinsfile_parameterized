@@ -9,4 +9,4 @@ properties([
 		])
 ])
 
-sharedInfrastructurePipeline('probate', params.ENVIRONMENT, 'sandbox')
+sharedInfrastructurePipeline('rpx', params.ENVIRONMENT, 'sandbox')
