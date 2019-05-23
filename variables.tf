@@ -101,7 +101,3 @@ variable "health_check_timeout" {
 variable "unhealthy_threshold" {
   default = "5"
 }
-
-variable "external_hostname_www_caveats" {
-  type = "string"
-}
