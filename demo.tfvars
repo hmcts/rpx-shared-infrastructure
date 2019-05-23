@@ -1,6 +1,3 @@
-asp_capacity = "1"
-external_hostname = "rpx.demo.platform.hmcts.net"
+external_hostname = "xui-webapp.demo.platform.hmcts.net"
 external_cert_name = "star-demo"
 external_cert_vault_uri = "https://infra-vault-nonprod.vault.azure.net/"
-external_hostname_gateway = "gateway-rpx.demo.platform.hmcts.net"
-external_hostname_www = "rpx.demo.platform.hmcts.net"

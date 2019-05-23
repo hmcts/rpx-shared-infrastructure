@@ -1,5 +1,3 @@
-external_hostname = "xui.service.gov.uk"
-external_cert_name = "xui-service-gov-uk"
+external_hostname = "xui.judiciary.uk"
+external_cert_name = "xui-judiciary-uk"
 external_cert_vault_uri = "https://infra-vault-prod.vault.azure.net/"
-external_hostname_gateway = "www.xui.service.gov.uk"
-external_hostname_www = "www.xui.platform.hmcts.net"
