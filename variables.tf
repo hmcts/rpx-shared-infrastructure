@@ -1,10 +1,7 @@
-variable "product" {
-  type = "string"
-  default = "rpx"
-}
+variable "product" {}
 
 variable "location" {
-  type    = "string"
+  type = "string"
   default = "UK South"
 }
 
@@ -15,9 +12,11 @@ variable "appinsights_location" {
   description = "Location for Application Insights"
 }
 
-variable "env" {
-  type = "string"
+variable "common_tags" {
+  type = "map"
 }
+
+variable "env" {}
 
 variable "application_type" {
   type        = "string"
@@ -33,71 +32,28 @@ variable "jenkins_AAD_objectId" {
   description = "(Required) The Azure AD object ID of a user, service principal or security group in the Azure Active Directory tenant for the vault. The object ID must be unique for the list of access policies."
 }
 
-variable "shutterPageDirectory" {
-  type    = "string"
-  default = "shutterPage"
-}
-
-//SHARED VARIABLES
 variable "subscription" {}
 
-variable "mgmt_subscription_id" {}
-
-variable "productName" {
-  type    = "string"
-  default = "rpx-frontend"
-}
-
-variable "asp_capacity" {
- default = "2" 
-}
-
-// TAG SPECIFIC VARIABLES
-variable "common_tags" {
-  type = "map"
-}
-
-variable "external_cert_vault_uri" {}
-variable "external_cert_name" {}
-variable "external_hostname" {}
-
-// TAG SPECIFIC VARIABLES
 variable "team_name" {
-  type        = "string"
-  description = "The name of your team"
-  default     = "Expert UI"
+  default = "rpa"
 }
 
 variable "team_contact" {
-  type        = "string"
-  description = "The name of your Slack channel people can use to contact your team about your infrastructure"
-  default     = "#rpx-jenkins"
+  default = "#expert-ui"
 }
 
-variable "destroy_me" {
-  type        = "string"
-  description = "Here be dragons! In the future if this is set to Yes then automation will delete this resource on a schedule. Please set to No unless you know what you are doing"
-  default     = "No"
+variable "name" {
+  default = false
+}
+
+variable "asp_capacity" {
+  default = 2
 }
 
 variable "ilbIp" {}
 
-variable "external_hostname_gateway" {
-  type = "string"
-}
+variable "external_cert_name" {}
 
-variable "external_hostname_www" {
-  type = "string"
-}
+variable "external_hostname" {}
 
-variable "health_check_interval" {
-  default = "30"
-}
-
-variable "health_check_timeout" {
-  default = "30"
-}
-
-variable "unhealthy_threshold" {
-  default = "5"
-}
+variable "external_cert_vault_uri" {}
