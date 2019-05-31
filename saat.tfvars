@@ -1,6 +1,0 @@
-asp_capacity = "1"
-external_hostname = "rpx.saat.platform.hmcts.net"
-external_cert_name = "STAR-saat-platform-hmcts-net"
-external_cert_vault_uri = "https://infra-vault-sandbox.vault.azure.net/"
-external_hostname_gateway = "service-rpx.saat.platform.hmcts.net"
-external_hostname_www = "www-rpx.saat.platform.hmcts.net"

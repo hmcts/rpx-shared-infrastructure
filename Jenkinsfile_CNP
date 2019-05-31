@@ -2,6 +2,16 @@
 //noinspection GroovyUnusedAssignment
 @Library("Infrastructure") _
 
-withInfraPipeline('rpx') {
-  enableSlackNotifications('#rpx-jenkins')
+import uk.gov.hmcts.contino.Environment
+
+Environment environment = new Environment(env)
+
+onMaster {
+  sharedInfrastructurePipeline('rpx', environment.nonProdName, 'nonprod')
+  sharedInfrastructurePipeline('rpx', environment.demoName, 'nonprod')
+  sharedInfrastructurePipeline('rpx', environment.prodName, 'prod')
+}
+
+onHMCTSDemo {
+  sharedInfrastructurePipeline('rpx', environment.hmctsDemoName, 'hmctsdemo')
 }
