@@ -6,3 +6,7 @@ def product = 'rpx'
 
 withInfraPipeline(product) {
 }
+
+onMaster {
+
+}
