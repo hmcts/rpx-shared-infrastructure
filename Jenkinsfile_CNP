@@ -2,16 +2,7 @@
 //noinspection GroovyUnusedAssignment
 @Library("Infrastructure") _
 
-import uk.gov.hmcts.contino.Environment
+def product = 'xui'
 
-Environment environment = new Environment(env)
-
-onMaster {
-  sharedInfrastructurePipeline('rpx', environment.nonProdName, 'nonprod')
-  sharedInfrastructurePipeline('rpx', environment.demoName, 'nonprod')
-  sharedInfrastructurePipeline('rpx', environment.prodName, 'prod')
-}
-
-onHMCTSDemo {
-  sharedInfrastructurePipeline('rpx', environment.hmctsDemoName, 'hmctsdemo')
+withInfraPipeline(product) {
 }
