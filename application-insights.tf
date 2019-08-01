@@ -5,6 +5,6 @@ resource "azurerm_application_insights" "appinsights" {
   application_type    = "${var.application_type}"
 }
 
-output "appInsightsInstrumentationKey" {
+output "AppInsightsInstrumentationKey" {
   value = "${azurerm_application_insights.appinsights.instrumentation_key}"
 }
