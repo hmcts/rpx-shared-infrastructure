@@ -8,7 +8,7 @@ Environment environment = new Environment(env)
 
 onMaster {
   sharedInfrastructurePipeline('rpx', environment.nonProdName, 'nonprod')
-  sharedInfrastructurePipeline('rpx', environment.demoName, 'nonprod')
+  sharedInfrastructurePipeline('rpx', environment.demoName, 'demo')
   sharedInfrastructurePipeline('rpx', environment.prodName, 'prod')
 }
 
