@@ -1,28 +1,29 @@
+// New Syntax
 #!groovy
 //noinspection GroovyUnusedAssignment
 @Library("Infrastructure") _
 
 import uk.gov.hmcts.contino.Environment
 
-Environment environment = new Environment(env)
-
-onMaster {
-  sharedInfrastructurePipeline('rpx', environment.demoName, 'nonprod')
-  sharedInfrastructurePipeline('rpx', environment.nonProdName, 'nonprod')
-  sharedInfrastructurePipeline('rpx', environment.prodName, 'prod')
+withInfraPipeline("rpx") {
+    
 }
 
-onHMCTSDemo {
-  sharedInfrastructurePipeline('rpx', environment.hmctsDemoName, 'hmctsdemo')
-}
-
-// New Syntax
+//Old Syntax
 //#!groovy
 //noinspection GroovyUnusedAssignment
 //@Library("Infrastructure") _
 //
 //import uk.gov.hmcts.contino.Environment
 //
-//withInfraPipeline("rpx") {
-//    
+//Environment environment = new Environment(env)
+//
+//onMaster {
+//  sharedInfrastructurePipeline('rpx', environment.demoName, 'nonprod')
+//  sharedInfrastructurePipeline('rpx', environment.nonProdName, 'nonprod')
+//  sharedInfrastructurePipeline('rpx', environment.prodName, 'prod')
+//}
+//
+//onHMCTSDemo {
+//  sharedInfrastructurePipeline('rpx', environment.hmctsDemoName, 'hmctsdemo')
 //}
