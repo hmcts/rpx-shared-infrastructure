@@ -5,7 +5,9 @@
 import uk.gov.hmcts.contino.Environment
 
 withInfraPipeline("rpx") {
-    
+
+  enableSlackNotifications("#rpa-pipeline")
+
 }
 
 //Old Syntax
