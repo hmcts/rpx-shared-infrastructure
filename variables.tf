@@ -52,8 +52,6 @@ variable "asp_capacity" {
 
 variable "ilbIp" {}
 
-variable "external_cert_name" {}
-
 variable "external_hostname" {}
 
 variable "external_cert_name" {}
