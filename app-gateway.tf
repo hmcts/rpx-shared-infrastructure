@@ -143,21 +143,30 @@ module "appGw" {
    # Backend address Pools
   backendAddressPools = [
     {
-      name = "${var.product}-${var.env}"
+      name = "${var.product}-${var.env}-backend-cases-pool"
 
       backendAddresses = [
         {
           ipAddress = "${local.webapp_internal_hostname_cases}"
         },
+      ]
+      
+      name = "${var.product}-${var.env}-backend-ao-pool"
+      backendAddresses = [
         {
           ipAddress = "${local.webapp_internal_hostname_ao}"
         },
+      ]
+      
+      name = "${var.product}-${var.env}-backend-mo-pool"
+      backendAddresses = [
         {
           ipAddress = "${local.webapp_internal_hostname_mo}"
-        }
+        },
       ]
     },
   ]
+  
   use_authentication_cert = true
   backendHttpSettingsCollection = [
     {
