@@ -195,14 +195,14 @@ module "appGw" {
       name                = "http-cases"
       RuleType            = "Basic"
       httpListener        = "http-cases-listener"
-      backendAddressPool  = "${var.product}-${var.env}"
+      backendAddressPool  = "${local.webapp_internal_hostname_cases}"
       backendHttpSettings = "backend-cases-80"
     },
     {
       name                = "https-cases"
       RuleType            = "Basic"
       httpListener        = "https-cases-listener"
-      backendAddressPool  = "${var.product}-${var.env}"
+      backendAddressPool  = "${local.webapp_internal_hostname_cases}"
       backendHttpSettings = "backend-cases-443"
     },
         {
