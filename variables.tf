@@ -56,12 +56,6 @@ variable "external_hostname" {}
 
 variable "external_cert_name" {}
 
-variable "cert_name_mo" {}
-
-variable "cert_name_ao" {}
-
-variable "cert_name_cases" {}
-
 variable "external_hostname_ao" {}
 
 variable "external_hostname_mo" {}
