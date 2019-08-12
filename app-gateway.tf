@@ -17,11 +17,11 @@ locals {
 
  xui_suffix  = "${var.env != "prod" ? "-webapp" : ""}"
 
- webapp_internal_hostname  = "xui-webapp-${var.env}.service.core-compute-${var.env}.internal"
+ webapp_internal_hostname_cases  = "xui-webapp-${var.env}.service.core-compute-${var.env}.internal"
 
-webapp_internal_hostname  = "xui-mo-webapp-${var.env}.service.core-compute-${var.env}.internal"
+webapp_internal_hostname_ao  = "xui-mo-webapp-${var.env}.service.core-compute-${var.env}.internal"
 
-webapp_internal_hostname  = "xui-ao-webapp-${var.env}.service.core-compute-${var.env}.internal"
+webapp_internal_hostname_mo  = "xui-ao-webapp-${var.env}.service.core-compute-${var.env}.internal"
 
 }
 
@@ -167,8 +167,14 @@ module "appGw" {
 
       backendAddresses = [
         {
-          ipAddress = "${local.webapp_internal_hostname}"
+          ipAddress = "${local.webapp_internal_hostname_cases}"
         },
+        {
+          ipAddress = "${local.webapp_internal_hostname_ao}"
+        },
+        {
+          ipAddress = "${local.webapp_internal_hostname_mo}"
+        }
       ]
     },
   ]

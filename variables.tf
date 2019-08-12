@@ -56,6 +56,18 @@ variable "external_cert_name" {}
 
 variable "external_hostname" {}
 
+variable "external_cert_name_mo" {}
+
+variable "external_cert_name_ao" {}
+
+variable "external_cert_name_cases" {}
+
+variable "external_hostname_ao" {}
+
+variable "external_hostname_mo" {}
+
+variable "external_hostname_cases" {}
+
 variable "external_hostname_www" {}
 
 variable "external_cert_vault_uri" {}
