@@ -1,14 +1,14 @@
-data "azurerm_key_vault_secret" "cert" {
+data "azurerm_key_vault_secret" "cert_ao" {
   name      = "${var.external_cert_name_ao}"
   vault_uri = "${var.external_cert_vault_uri}"
 }
 
-data "azurerm_key_vault_secret" "cert" {
+data "azurerm_key_vault_secret" "cert_mo" {
   name      = "${var.external_cert_name_mo}"
   vault_uri = "${var.external_cert_vault_uri}"
 }
 
-data "azurerm_key_vault_secret" "cert" {
+data "azurerm_key_vault_secret" "cert_cases" {
   name      = "${var.external_cert_name_cases}"
   vault_uri = "${var.external_cert_vault_uri}"
 }
