@@ -29,7 +29,7 @@ module "appGw" {
     {
       name     = "internalNetwork"
       subnetId = "${data.azurerm_subnet.subnet_a.id}"
-    }
+    },
   ]
 
   sslCertificates = [
@@ -37,7 +37,7 @@ module "appGw" {
       name     = "${var.external_cert_name}"
       data     = "${data.azurerm_key_vault_secret.cert.value}"
       password = ""
-    }
+    },
   ]
 
   # Http Listeners
@@ -89,7 +89,7 @@ module "appGw" {
       Protocol                = "Https"
       SslCertificate          = "${var.external_cert_name}"
       hostName                = "${var.external_hostname_ao}"
-    }
+    },
   ]
 
    # Backend address Pools
@@ -116,7 +116,7 @@ module "appGw" {
           ipAddress = "${local.webapp_internal_hostname_mo}"
         },
       ]
-    }
+    },
   ]
   
   use_authentication_cert = true
@@ -176,7 +176,7 @@ module "appGw" {
       PickHostNameFromBackendAddress = "False"
       HostName                       = "${var.external_hostname_ao}"
     },
-      {
+    {
       name                           = "backend-443"
       port                           = 443
       Protocol                       = "Https"
@@ -187,6 +187,10 @@ module "appGw" {
       PickHostNameFromBackendAddress = "False"
       HostName                       = "${var.external_hostname_ao}"
     },
+  ]
+  
+  # Request routing rules
+  requestRoutingRules = [
     {
       name                = "http"
       RuleType            = "Basic"
@@ -201,6 +205,8 @@ module "appGw" {
       backendAddressPool  = "${var.product}-${var.env}"
       backendHttpSettings = "backend-443"
     },
+  ]
+  probes = [
     {
       name                                = "http-probe"
       protocol                            = "Http"
@@ -272,6 +278,6 @@ module "appGw" {
       backendHttpSettings                 = "backend-443"
       host                                = "${var.external_hostname_ao}"
       healthyStatusCodes                  = "200-399"                  #// MS returns 400 on /, allowing more codes in case they change it
-    }
+    },
   ]
 }
