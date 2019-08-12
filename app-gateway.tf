@@ -43,7 +43,7 @@ module "appGw" {
   # Http Listeners
   httpListeners = [
     {
-      name                    = "http-listener"
+      name                    = "http-cases-listener"
       FrontendIPConfiguration = "appGatewayFrontendIP"
       FrontendPort            = "frontendPort80"
       Protocol                = "Http"
@@ -51,7 +51,7 @@ module "appGw" {
       hostName                = "${var.external_hostname_cases}"
     },
     {
-      name                    = "https-listener"
+      name                    = "https-cases-listener"
       FrontendIPConfiguration = "appGatewayFrontendIP"
       FrontendPort            = "frontendPort443"
       Protocol                = "Https"
@@ -59,7 +59,7 @@ module "appGw" {
       hostName                = "${var.external_hostname_cases}"
     },
     {
-      name                    = "http-listener"
+      name                    = "http-mo-listener"
       FrontendIPConfiguration = "appGatewayFrontendIP"
       FrontendPort            = "frontendPort80"
       Protocol                = "Http"
@@ -67,7 +67,7 @@ module "appGw" {
       hostName                = "${var.external_hostname_mo}"
     },
     {
-      name                    = "https-listener"
+      name                    = "https-mo-listener"
       FrontendIPConfiguration = "appGatewayFrontendIP"
       FrontendPort            = "frontendPort443"
       Protocol                = "Https"
@@ -75,7 +75,7 @@ module "appGw" {
       hostName                = "${var.external_hostname_mo}"
     },
     {
-      name                    = "http-listener"
+      name                    = "http-ao-listener"
       FrontendIPConfiguration = "appGatewayFrontendIP"
       FrontendPort            = "frontendPort80"
       Protocol                = "Http"
@@ -83,7 +83,7 @@ module "appGw" {
       hostName                = "${var.external_hostname_ao}"
     },
     {
-      name                    = "https-listener"
+      name                    = "https-ao-listener"
       FrontendIPConfiguration = "appGatewayFrontendIP"
       FrontendPort            = "frontendPort443"
       Protocol                = "Https"
@@ -122,68 +122,68 @@ module "appGw" {
   use_authentication_cert = true
   backendHttpSettingsCollection = [
     {
-      name                           = "backend-80"
+      name                           = "backend-cases-80"
       port                           = 80
       Protocol                       = "Http"
       CookieBasedAffinity            = "Disabled"
       AuthenticationCertificates     = ""
       probeEnabled                   = "True"
-      probe                          = "http-probe"
+      probe                          = "http-cases-probe"
       PickHostNameFromBackendAddress = "False"
       HostName                       = "${var.external_hostname_cases}"
     },
       {
-      name                           = "backend-443"
+      name                           = "backend-cases-443"
       port                           = 443
       Protocol                       = "Https"
       CookieBasedAffinity            = "Disabled"
       AuthenticationCertificates     = "ilbCert"
       probeEnabled                   = "True"
-      probe                          = "https-probe"
+      probe                          = "https-cases-probe"
       PickHostNameFromBackendAddress = "False"
       HostName                       = "${var.external_hostname_cases}"
     },
     {
-      name                           = "backend-80"
+      name                           = "backend-mo-80"
       port                           = 80
       Protocol                       = "Http"
       CookieBasedAffinity            = "Disabled"
       AuthenticationCertificates     = ""
       probeEnabled                   = "True"
-      probe                          = "http-probe"
+      probe                          = "http-mo-probe"
       PickHostNameFromBackendAddress = "False"
       HostName                       = "${var.external_hostname_mo}"
     },
       {
-      name                           = "backend-443"
+      name                           = "backend-mo-443"
       port                           = 443
       Protocol                       = "Https"
       CookieBasedAffinity            = "Disabled"
       AuthenticationCertificates     = "ilbCert"
       probeEnabled                   = "True"
-      probe                          = "https-probe"
+      probe                          = "https-mo-probe"
       PickHostNameFromBackendAddress = "False"
       HostName                       = "${var.external_hostname_mo}"
     },
     {
-      name                           = "backend-80"
+      name                           = "backend-ao-80"
       port                           = 80
       Protocol                       = "Http"
       CookieBasedAffinity            = "Disabled"
       AuthenticationCertificates     = ""
       probeEnabled                   = "True"
-      probe                          = "http-probe"
+      probe                          = "http-ao-probe"
       PickHostNameFromBackendAddress = "False"
       HostName                       = "${var.external_hostname_ao}"
     },
     {
-      name                           = "backend-443"
+      name                           = "backend-ao-443"
       port                           = 443
       Protocol                       = "Https"
       CookieBasedAffinity            = "Disabled"
       AuthenticationCertificates     = "ilbCert"
       probeEnabled                   = "True"
-      probe                          = "https-probe"
+      probe                          = "https-ao-probe"
       PickHostNameFromBackendAddress = "False"
       HostName                       = "${var.external_hostname_ao}"
     },
@@ -192,90 +192,118 @@ module "appGw" {
   # Request routing rules
   requestRoutingRules = [
     {
-      name                = "http"
+      name                = "http-cases"
       RuleType            = "Basic"
-      httpListener        = "http-listener"
+      httpListener        = "http-cases-listener"
       backendAddressPool  = "${var.product}-${var.env}"
-      backendHttpSettings = "backend-80"
+      backendHttpSettings = "backend-cases-80"
     },
     {
-      name                = "https"
+      name                = "https-cases"
       RuleType            = "Basic"
-      httpListener        = "https-listener"
+      httpListener        = "https-cases-listener"
       backendAddressPool  = "${var.product}-${var.env}"
-      backendHttpSettings = "backend-443"
+      backendHttpSettings = "backend-cases-443"
+    },
+        {
+      name                = "http-mo"
+      RuleType            = "Basic"
+      httpListener        = "http-mo-listener"
+      backendAddressPool  = "${var.product}-${var.env}"
+      backendHttpSettings = "backend-mo-80"
+    },
+    {
+      name                = "https-mo"
+      RuleType            = "Basic"
+      httpListener        = "https-mo-listener"
+      backendAddressPool  = "${var.product}-${var.env}"
+      backendHttpSettings = "backend-mo-443"
+    },
+        {
+      name                = "http-ao"
+      RuleType            = "Basic"
+      httpListener        = "http-ao-listener"
+      backendAddressPool  = "${var.product}-${var.env}"
+      backendHttpSettings = "backend-ao-80"
+    },
+    {
+      name                = "https-ao"
+      RuleType            = "Basic"
+      httpListener        = "https-ao-listener"
+      backendAddressPool  = "${var.product}-${var.env}"
+      backendHttpSettings = "backend-ao-443"
     },
   ]
   probes = [
     {
-      name                                = "http-probe"
+      name                                = "http-cases-probe"
       protocol                            = "Http"
       path                                = "/"
       interval                            = 30
       timeout                             = 30
       unhealthyThreshold                  = 5
       pickHostNameFromBackendHttpSettings = "false"
-      backendHttpSettings                 = "backend-80"
+      backendHttpSettings                 = "backend-cases-80"
       host                                = "${var.external_hostname_cases}"
       healthyStatusCodes                  = "200-399"                  #// MS returns 400 on /, allowing more codes in case they change it
     },
     {
-      name                                = "https-probe"
+      name                                = "https-cases-probe"
       protocol                            = "Https"
       path                                = "/"
       interval                            = 30
       timeout                             = 30
       unhealthyThreshold                  = 5
       pickHostNameFromBackendHttpSettings = "false"
-      backendHttpSettings                 = "backend-443"
+      backendHttpSettings                 = "backend-cases-443"
       host                                = "${var.external_hostname_cases}"
       healthyStatusCodes                  = "200-399"                  #// MS returns 400 on /, allowing more codes in case they change it
     },
     {
-      name                                = "http-probe"
+      name                                = "http-mo-probe"
       protocol                            = "Http"
       path                                = "/"
       interval                            = 30
       timeout                             = 30
       unhealthyThreshold                  = 5
       pickHostNameFromBackendHttpSettings = "false"
-      backendHttpSettings                 = "backend-80"
+      backendHttpSettings                 = "backend-mo-80"
       host                                = "${var.external_hostname_mo}"
       healthyStatusCodes                  = "200-399"                  #// MS returns 400 on /, allowing more codes in case they change it
     },
     {
-      name                                = "https-probe"
+      name                                = "https-mo-probe"
       protocol                            = "Https"
       path                                = "/"
       interval                            = 30
       timeout                             = 30
       unhealthyThreshold                  = 5
       pickHostNameFromBackendHttpSettings = "false"
-      backendHttpSettings                 = "backend-443"
+      backendHttpSettings                 = "backend-mo-443"
       host                                = "${var.external_hostname_mo}"
       healthyStatusCodes                  = "200-399"                  #// MS returns 400 on /, allowing more codes in case they change it
     },
     {
-      name                                = "http-probe"
+      name                                = "http-ao-probe"
       protocol                            = "Http"
       path                                = "/"
       interval                            = 30
       timeout                             = 30
       unhealthyThreshold                  = 5
       pickHostNameFromBackendHttpSettings = "false"
-      backendHttpSettings                 = "backend-80"
+      backendHttpSettings                 = "backend-ao-80"
       host                                = "${var.external_hostname_ao}"
       healthyStatusCodes                  = "200-399"                  #// MS returns 400 on /, allowing more codes in case they change it
     },
     {
-      name                                = "https-probe"
+      name                                = "https-ao-probe"
       protocol                            = "Https"
       path                                = "/"
       interval                            = 30
       timeout                             = 30
       unhealthyThreshold                  = 5
       pickHostNameFromBackendHttpSettings = "false"
-      backendHttpSettings                 = "backend-443"
+      backendHttpSettings                 = "backend-ao-443"
       host                                = "${var.external_hostname_ao}"
       healthyStatusCodes                  = "200-399"                  #// MS returns 400 on /, allowing more codes in case they change it
     },
