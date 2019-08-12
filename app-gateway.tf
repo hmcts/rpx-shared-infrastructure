@@ -5,12 +5,6 @@ data "azurerm_key_vault_secret" "cert" {
 
 locals {
 
-  cert_name_ao = "${var.external_cert_name}"
-
-  cert_name_mo = "${var.external_cert_name}"
-
-  cert_name_cases = "${var.external_cert_name}"
-
  xui_suffix  = "${var.env != "prod" ? "-webapp" : ""}"
 
  webapp_internal_hostname_cases  = "xui-webapp-${var.env}.service.core-compute-${var.env}.internal"
@@ -61,7 +55,7 @@ module "appGw" {
       FrontendIPConfiguration = "appGatewayFrontendIP"
       FrontendPort            = "frontendPort443"
       Protocol                = "Https"
-      SslCertificate          = "${var.cert_name_cases}"
+      SslCertificate          = "${var.external_cert_name}"
       hostName                = "${var.external_hostname_cases}"
     },
     {
@@ -77,7 +71,7 @@ module "appGw" {
       FrontendIPConfiguration = "appGatewayFrontendIP"
       FrontendPort            = "frontendPort443"
       Protocol                = "Https"
-      SslCertificate          = "${var.cert_name_cases}"
+      SslCertificate          = "${var.external_cert_name}"
       hostName                = "${var.external_hostname_www}"
     },
     {
@@ -93,7 +87,7 @@ module "appGw" {
       FrontendIPConfiguration = "appGatewayFrontendIP"
       FrontendPort            = "frontendPort443"
       Protocol                = "Https"
-      SslCertificate          = "${var.cert_name_mo}"
+      SslCertificate          = "${var.external_cert_name}"
       hostName                = "${var.external_hostname_mo}"
     },
     {
@@ -109,7 +103,7 @@ module "appGw" {
       FrontendIPConfiguration = "appGatewayFrontendIP"
       FrontendPort            = "frontendPort443"
       Protocol                = "Https"
-      SslCertificate          = "${var.cert_name_mo}"
+      SslCertificate          = "${var.external_cert_name}"
       hostName                = "${var.external_hostname_www}"
     },
     {
@@ -125,7 +119,7 @@ module "appGw" {
       FrontendIPConfiguration = "appGatewayFrontendIP"
       FrontendPort            = "frontendPort443"
       Protocol                = "Https"
-      SslCertificate          = "${var.cert_name_ao}"
+      SslCertificate          = "${var.external_cert_name}"
       hostName                = "${var.external_hostname_ao}"
     },
     {
@@ -141,7 +135,7 @@ module "appGw" {
       FrontendIPConfiguration = "appGatewayFrontendIP"
       FrontendPort            = "frontendPort443"
       Protocol                = "Https"
-      SslCertificate          = "${var.cert_name_ao}"
+      SslCertificate          = "${var.external_cert_name}"
       hostName                = "${var.external_hostname_www}"
     },
   ]
