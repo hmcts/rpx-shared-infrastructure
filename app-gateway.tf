@@ -5,9 +5,7 @@ resource "azurerm_application_insights" "appinsights" {
   application_type    = "${var.application_type}"
 }
 
-output "appInsightsInstrumentationKey" {
-  value = "${azurerm_application_insights.appinsights.instrumentation_key}"
-}
+
 data "azurerm_key_vault_secret" "cert" {
   name      = "${var.external_cert_name}"
   vault_uri = "${var.external_cert_vault_uri}"
