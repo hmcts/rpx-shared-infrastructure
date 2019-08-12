@@ -101,17 +101,9 @@ module "appGw" {
         {
           ipAddress = "${local.webapp_internal_hostname_cases}"
         },
-      ]
-      
-      name = "${var.product}-${var.env}-backend-ao-pool"
-      backendAddresses = [
         {
           ipAddress = "${local.webapp_internal_hostname_ao}"
         },
-      ]
-      
-      name = "${var.product}-${var.env}-backend-mo-pool"
-      backendAddresses = [
         {
           ipAddress = "${local.webapp_internal_hostname_mo}"
         },
