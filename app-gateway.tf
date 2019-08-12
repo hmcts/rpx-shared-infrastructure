@@ -95,7 +95,7 @@ module "appGw" {
    # Backend address Pools
   backendAddressPools = [
     {
-      name = "${var.product}-${var.env}-backend-cases-pool"
+      name = "${var.product}-${var.env}"
 
       backendAddresses = [
         {
@@ -195,14 +195,14 @@ module "appGw" {
       name                = "http-cases"
       RuleType            = "Basic"
       httpListener        = "http-cases-listener"
-      backendAddressPool  = "${var.product}-${var.env}-backend-cases-pool"
+      backendAddressPool  = "${var.product}-${var.env}"
       backendHttpSettings = "backend-cases-80"
     },
     {
       name                = "https-cases"
       RuleType            = "Basic"
       httpListener        = "https-cases-listener"
-      backendAddressPool  = "${var.product}-${var.env}-backend-cases-pool"
+      backendAddressPool  = "${var.product}-${var.env}"
       backendHttpSettings = "backend-cases-443"
     },
         {
