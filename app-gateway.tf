@@ -90,6 +90,22 @@ module "appGw" {
       SslCertificate          = "${var.external_cert_name}"
       hostName                = "${var.external_hostname_ao}"
     },
+        {
+      name                    = "http-mo-reg-listener"
+      FrontendIPConfiguration = "appGatewayFrontendIP"
+      FrontendPort            = "frontendPort80"
+      Protocol                = "Http"
+      SslCertificate          = ""
+      hostName                = "${var.external_hostname_mo_reg}"
+    },
+    {
+      name                    = "https-mo-reg-listener"
+      FrontendIPConfiguration = "appGatewayFrontendIP"
+      FrontendPort            = "frontendPort443"
+      Protocol                = "Https"
+      SslCertificate          = "${var.external_cert_name}"
+      hostName                = "${var.external_hostname_mo_reg}"
+    },
   ]
 
    # Backend address Pools
@@ -225,7 +241,50 @@ module "appGw" {
       backendAddressPool  = "${var.product}-${var.env}"
       backendHttpSettings = "backend-ao-443"
     },
+    {
+      name                = "https-mo-reg"
+      RuleType            = "PathBasedRouting"
+      httpListener        = "https-mo-reg-listener"
+      backendAddressPool  = "${var.product}-${var.env}"
+      backendHttpSettings = "backend-mo-443"
+      urlPathMap          = "https-url-path-map-service"
+    },
+    {
+      name                = "http-mo-reg"
+      RuleType            = "PathBasedRouting"
+      httpListener        = "http-mo-reg-listener"
+      backendAddressPool  = "${var.product}-${var.env}"
+      backendHttpSettings = "backend-mo-80"
+      urlPathMap = "http-url-path-map-service"
+    },
   ]
+
+  urlPathMaps = [
+    {
+      name                       = "http-url-path-map-service"
+      defaultBackendAddressPool  = "${var.product}-${var.env}"
+      defaultBackendHttpSettings = "backend-mo-80"
+      pathRules                  = 
+        {
+          name                = "http-url-path-map-service"
+          paths               = ["/register-org/register","/register-org/register/*" ]
+          backendAddressPool  = "${var.product}-${var.env}"
+          backendHttpSettings = "backend-mo-80"
+        }
+    },
+    {
+      name                       = "https-url-path-map-service"
+      defaultBackendAddressPool  = "${var.product}-${var.env}"
+      defaultBackendHttpSettings = "backend-mo-443"
+      pathRules                  = 
+        {
+          name                = "https-url-path-map-service"
+          paths               = ["/register-org/register","/register-org/register/*" ]
+          backendAddressPool  = "${var.product}-${var.env}"
+          backendHttpSettings = "backend-mo-443"
+        }
+    } ]
+
   probes = [
     {
       name                                = "http-case-probe"
