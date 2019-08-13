@@ -195,6 +195,26 @@ module "appGw" {
       PickHostNameFromBackendAddress = "False"
       HostName                       = "${var.external_hostname_ao}"
     },
+      {
+      name                           = "backend-mo-reg-80"
+      port                           = 80
+      Protocol                       = "Http"
+      CookieBasedAffinity            = "Disabled"
+      AuthenticationCertificates     = ""
+      probeEnabled                   = "True"
+      probe                          = "http-mo-probe"
+      PickHostNameFromBackendAddress = "True"
+    },
+      {
+      name                           = "backend-mo-reg-443"
+      port                           = 443
+      Protocol                       = "Https"
+      CookieBasedAffinity            = "Disabled"
+      AuthenticationCertificates     = "ilbCert"
+      probeEnabled                   = "True"
+      probe                          = "https-mo-probe"
+      PickHostNameFromBackendAddress = "True"
+    },
   ]
   
   # Request routing rules
@@ -249,7 +269,7 @@ requestRoutingRulesPathBased = [
       RuleType            = "PathBasedRouting"
       httpListener        = "https-mo-reg-listener"
       backendAddressPool  = "${var.product}-${var.env}"
-      backendHttpSettings = "backend-mo-443"
+      backendHttpSettings = "backend-mo-reg-443"
       urlPathMap          = "https-url-path-map-service"
     },
     {
@@ -257,7 +277,7 @@ requestRoutingRulesPathBased = [
       RuleType            = "PathBasedRouting"
       httpListener        = "http-mo-reg-listener"
       backendAddressPool  = "${var.product}-${var.env}"
-      backendHttpSettings = "backend-mo-80"
+      backendHttpSettings = "backend-mo-reg-80"
       urlPathMap = "http-url-path-map-service"
     },
   ]
