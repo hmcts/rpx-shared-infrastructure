@@ -203,7 +203,7 @@ module "appGw" {
       AuthenticationCertificates     = ""
       probeEnabled                   = "True"
       probe                          = "http-mo-probe"
-      PickHostNameFromBackendAddress = "True"
+      PickHostNameFromBackendAddress = "False"
       HostName = ""
     },
       {
@@ -214,7 +214,7 @@ module "appGw" {
       AuthenticationCertificates     = "ilbCert"
       probeEnabled                   = "True"
       probe                          = "https-mo-probe"
-      PickHostNameFromBackendAddress = "True"
+      PickHostNameFromBackendAddress = "False"
       HostName = ""
     },
   ]
@@ -288,25 +288,25 @@ requestRoutingRulesPathBased = [
     {
       name                       = "http-url-path-map-service"
       defaultBackendAddressPool  = "${var.product}-${var.env}"
-      defaultBackendHttpSettings = "backend-mo-80"
+      defaultBackendHttpSettings = "backend-mo-reg-80"
       pathRules                 = [
         {
           name                = "http-url-path-map-service"
           paths               = ["/register-org/register","/register-org/register/*" ]
           backendAddressPool  = "${var.product}-${var.env}"
-          backendHttpSettings = "backend-mo-80"
+          backendHttpSettings = "backend-mo-reg-80"
         }]
       },
     {
       name                       = "https-url-path-map-service"
       defaultBackendAddressPool  = "${var.product}-${var.env}"
-      defaultBackendHttpSettings = "backend-mo-443"
+      defaultBackendHttpSettings = "backend-mo-reg-443"
       pathRules                  = [
         {
           name                = "https-url-path-map-service"
           paths               = ["/register-org/register","/register-org/register/*" ]
           backendAddressPool  = "${var.product}-${var.env}"
-          backendHttpSettings = "backend-mo-443"
+          backendHttpSettings = "backend-mo-reg-443"
         }]
     }
   ]
