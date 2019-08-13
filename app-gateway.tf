@@ -7,7 +7,7 @@ locals {
 
  xui_suffix  = "${var.env != "prod" ? "-webapp" : ""}"
 
- webapp_internal_hostname_cases  = "xui-webapp-${var.env}.service.core-compute-${var.env}.internal"
+ webapp_internal_hostname_case  = "xui-webapp-${var.env}.service.core-compute-${var.env}.internal"
 
 webapp_internal_hostname_ao  = "xui-mo-webapp-${var.env}.service.core-compute-${var.env}.internal"
 
@@ -43,20 +43,20 @@ module "appGw" {
   # Http Listeners
   httpListeners = [
     {
-      name                    = "http-cases-listener"
+      name                    = "http-case-listener"
       FrontendIPConfiguration = "appGatewayFrontendIP"
       FrontendPort            = "frontendPort80"
       Protocol                = "Http"
       SslCertificate          = ""
-      hostName                = "${var.external_hostname_cases}"
+      hostName                = "${var.external_hostname_case}"
     },
     {
-      name                    = "https-cases-listener"
+      name                    = "https-case-listener"
       FrontendIPConfiguration = "appGatewayFrontendIP"
       FrontendPort            = "frontendPort443"
       Protocol                = "Https"
       SslCertificate          = "${var.external_cert_name}"
-      hostName                = "${var.external_hostname_cases}"
+      hostName                = "${var.external_hostname_case}"
     },
     {
       name                    = "http-mo-listener"
@@ -99,7 +99,7 @@ module "appGw" {
 
       backendAddresses = [
         {
-          ipAddress = "${local.webapp_internal_hostname_cases}"
+          ipAddress = "${local.webapp_internal_hostname_case}"
         },
         {
           ipAddress = "${local.webapp_internal_hostname_ao}"
@@ -114,26 +114,26 @@ module "appGw" {
   use_authentication_cert = true
   backendHttpSettingsCollection = [
     {
-      name                           = "backend-cases-80"
+      name                           = "backend-case-80"
       port                           = 80
       Protocol                       = "Http"
       CookieBasedAffinity            = "Disabled"
       AuthenticationCertificates     = ""
       probeEnabled                   = "True"
-      probe                          = "http-cases-probe"
+      probe                          = "http-case-probe"
       PickHostNameFromBackendAddress = "False"
-      HostName                       = "${var.external_hostname_cases}"
+      HostName                       = "${var.external_hostname_case}"
     },
       {
-      name                           = "backend-cases-443"
+      name                           = "backend-case-443"
       port                           = 443
       Protocol                       = "Https"
       CookieBasedAffinity            = "Disabled"
       AuthenticationCertificates     = "ilbCert"
       probeEnabled                   = "True"
-      probe                          = "https-cases-probe"
+      probe                          = "https-case-probe"
       PickHostNameFromBackendAddress = "False"
-      HostName                       = "${var.external_hostname_cases}"
+      HostName                       = "${var.external_hostname_case}"
     },
     {
       name                           = "backend-mo-80"
@@ -184,18 +184,18 @@ module "appGw" {
   # Request routing rules
   requestRoutingRules = [
     {
-      name                = "http-cases"
+      name                = "http-case"
       RuleType            = "Basic"
-      httpListener        = "http-cases-listener"
+      httpListener        = "http-case-listener"
       backendAddressPool  = "${var.product}-${var.env}"
-      backendHttpSettings = "backend-cases-80"
+      backendHttpSettings = "backend-case-80"
     },
     {
-      name                = "https-cases"
+      name                = "https-case"
       RuleType            = "Basic"
-      httpListener        = "https-cases-listener"
+      httpListener        = "https-case-listener"
       backendAddressPool  = "${var.product}-${var.env}"
-      backendHttpSettings = "backend-cases-443"
+      backendHttpSettings = "backend-case-443"
     },
         {
       name                = "http-mo"
@@ -228,27 +228,27 @@ module "appGw" {
   ]
   probes = [
     {
-      name                                = "http-cases-probe"
+      name                                = "http-case-probe"
       protocol                            = "Http"
       path                                = "/"
       interval                            = 30
       timeout                             = 30
       unhealthyThreshold                  = 5
       pickHostNameFromBackendHttpSettings = "false"
-      backendHttpSettings                 = "backend-cases-80"
-      host                                = "${var.external_hostname_cases}"
+      backendHttpSettings                 = "backend-case-80"
+      host                                = "${var.external_hostname_case}"
       healthyStatusCodes                  = "200-399"                  #// MS returns 400 on /, allowing more codes in case they change it
     },
     {
-      name                                = "https-cases-probe"
+      name                                = "https-case-probe"
       protocol                            = "Https"
       path                                = "/"
       interval                            = 30
       timeout                             = 30
       unhealthyThreshold                  = 5
       pickHostNameFromBackendHttpSettings = "false"
-      backendHttpSettings                 = "backend-cases-443"
-      host                                = "${var.external_hostname_cases}"
+      backendHttpSettings                 = "backend-case-443"
+      host                                = "${var.external_hostname_case}"
       healthyStatusCodes                  = "200-399"                  #// MS returns 400 on /, allowing more codes in case they change it
     },
     {

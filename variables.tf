@@ -58,7 +58,7 @@ variable "external_hostname_ao" {}
 
 variable "external_hostname_mo" {}
 
-variable "external_hostname_cases" {}
+variable "external_hostname_case" {}
 
 variable "external_hostname_www" {}
 
