@@ -204,6 +204,7 @@ module "appGw" {
       probeEnabled                   = "True"
       probe                          = "http-mo-probe"
       PickHostNameFromBackendAddress = "True"
+      HostName = ""
     },
       {
       name                           = "backend-mo-reg-443"
@@ -214,6 +215,7 @@ module "appGw" {
       probeEnabled                   = "True"
       probe                          = "https-mo-probe"
       PickHostNameFromBackendAddress = "True"
+      HostName = ""
     },
   ]
   
