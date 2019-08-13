@@ -241,6 +241,9 @@ module "appGw" {
       backendAddressPool  = "${var.product}-${var.env}"
       backendHttpSettings = "backend-ao-443"
     },
+  ]
+
+requestRoutingRulesPathBased = [
     {
       name                = "https-mo-reg"
       RuleType            = "PathBasedRouting"
@@ -283,7 +286,8 @@ module "appGw" {
           backendAddressPool  = "${var.product}-${var.env}"
           backendHttpSettings = "backend-mo-443"
         }
-    } ]
+    }
+  ]
 
   probes = [
     {
