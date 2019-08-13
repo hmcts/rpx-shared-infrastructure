@@ -267,25 +267,25 @@ requestRoutingRulesPathBased = [
       name                       = "http-url-path-map-service"
       defaultBackendAddressPool  = "${var.product}-${var.env}"
       defaultBackendHttpSettings = "backend-mo-80"
-      pathRules                  = 
+      pathRules                 = [
         {
           name                = "http-url-path-map-service"
           paths               = ["/register-org/register","/register-org/register/*" ]
           backendAddressPool  = "${var.product}-${var.env}"
           backendHttpSettings = "backend-mo-80"
-        }
-    },
+        }]
+      },
     {
       name                       = "https-url-path-map-service"
       defaultBackendAddressPool  = "${var.product}-${var.env}"
       defaultBackendHttpSettings = "backend-mo-443"
-      pathRules                  = 
+      pathRules                  = [
         {
           name                = "https-url-path-map-service"
           paths               = ["/register-org/register","/register-org/register/*" ]
           backendAddressPool  = "${var.product}-${var.env}"
           backendHttpSettings = "backend-mo-443"
-        }
+        }]
     }
   ]
 
