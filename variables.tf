@@ -54,6 +54,14 @@ variable "ilbIp" {}
 
 variable "external_cert_name" {}
 
-variable "external_hostname" {}
+variable "external_hostname_ao" {}
+
+variable "external_hostname_mo" {}
+
+variable "external_hostname_case" {}
+
+variable "external_hostname_www" {}
 
 variable "external_cert_vault_uri" {}
+
+variable "external_hostname_mo_reg" {}
