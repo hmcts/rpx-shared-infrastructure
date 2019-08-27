@@ -1,13 +1,16 @@
 data "azurerm_key_vault_secret" "cert" {
+  name      = "${var.external_ao_cert_name}"
+  name      = "${var.external_mo_cert_name}"
+  name      = "${var.external_reg_cert_name}"
   name      = "${var.external_cert_name}"
   vault_uri = "${var.external_cert_vault_uri}"
 }
 
 locals {
 
- xui_suffix  = "${var.env != "prod" ? "-webapp" : ""}"
+xui_suffix  = "${var.env != "prod" ? "-webapp" : ""}"
 
- webapp_internal_hostname_case  = "xui-webapp-${var.env}.service.core-compute-${var.env}.internal"
+webapp_internal_hostname_case  = "xui-webapp-${var.env}.service.core-compute-${var.env}.internal"
 
 webapp_internal_hostname_ao  = "xui-mo-webapp-${var.env}.service.core-compute-${var.env}.internal"
 
@@ -34,6 +37,9 @@ module "appGw" {
 
   sslCertificates = [
     {
+      name     = "${var.external_ao_cert_name}"
+      name     = "${var.external_mo_cert_name}"
+      name     = "${var.external_reg_cert_name}"
       name     = "${var.external_cert_name}"
       data     = "${data.azurerm_key_vault_secret.cert.value}"
       password = ""
@@ -42,22 +48,22 @@ module "appGw" {
 
   # Http Listeners
   httpListeners = [
-    {
-      name                    = "http-case-listener"
-      FrontendIPConfiguration = "appGatewayFrontendIP"
-      FrontendPort            = "frontendPort80"
-      Protocol                = "Http"
-      SslCertificate          = ""
-      hostName                = "${var.external_hostname_case}"
-    },
-    {
-      name                    = "https-case-listener"
-      FrontendIPConfiguration = "appGatewayFrontendIP"
-      FrontendPort            = "frontendPort443"
-      Protocol                = "Https"
-      SslCertificate          = "${var.external_cert_name}"
-      hostName                = "${var.external_hostname_case}"
-    },
+    //{
+    //  name                    = "http-case-listener"
+    //  FrontendIPConfiguration = "appGatewayFrontendIP"
+    //  FrontendPort            = "frontendPort80"
+    //  Protocol                = "Http"
+    //  SslCertificate          = ""
+    //  hostName                = "${var.external_hostname_case}"
+    //},
+    //{
+    //  name                    = "https-case-listener"
+    //  FrontendIPConfiguration = "appGatewayFrontendIP"
+    //  FrontendPort            = "frontendPort443"
+    //  Protocol                = "Https"
+    //  SslCertificate          = "${var.external_cert_name}"
+    //  hostName                = "${var.external_hostname_case}"
+    //},
     {
       name                    = "http-mo-listener"
       FrontendIPConfiguration = "appGatewayFrontendIP"
@@ -71,7 +77,7 @@ module "appGw" {
       FrontendIPConfiguration = "appGatewayFrontendIP"
       FrontendPort            = "frontendPort443"
       Protocol                = "Https"
-      SslCertificate          = "${var.external_cert_name}"
+      SslCertificate          = "${var.external_mo_cert_name}"
       hostName                = "${var.external_hostname_mo}"
     },
     {
@@ -87,7 +93,7 @@ module "appGw" {
       FrontendIPConfiguration = "appGatewayFrontendIP"
       FrontendPort            = "frontendPort443"
       Protocol                = "Https"
-      SslCertificate          = "${var.external_cert_name}"
+      SslCertificate          = "${var.external_ao_cert_name}"
       hostName                = "${var.external_hostname_ao}"
     },
         {
@@ -103,7 +109,7 @@ module "appGw" {
       FrontendIPConfiguration = "appGatewayFrontendIP"
       FrontendPort            = "frontendPort443"
       Protocol                = "Https"
-      SslCertificate          = "${var.external_cert_name}"
+      SslCertificate          = "${var.external_reg_cert_name}"
       hostName                = "${var.external_hostname_mo_reg}"
     },
   ]
@@ -129,28 +135,28 @@ module "appGw" {
   
   use_authentication_cert = true
   backendHttpSettingsCollection = [
-    {
-      name                           = "backend-case-80"
-      port                           = 80
-      Protocol                       = "Http"
-      CookieBasedAffinity            = "Disabled"
-      AuthenticationCertificates     = ""
-      probeEnabled                   = "True"
-      probe                          = "http-case-probe"
-      PickHostNameFromBackendAddress = "False"
-      HostName                       = "${var.external_hostname_case}"
-    },
-      {
-      name                           = "backend-case-443"
-      port                           = 443
-      Protocol                       = "Https"
-      CookieBasedAffinity            = "Disabled"
-      AuthenticationCertificates     = "ilbCert"
-      probeEnabled                   = "True"
-      probe                          = "https-case-probe"
-      PickHostNameFromBackendAddress = "False"
-      HostName                       = "${var.external_hostname_case}"
-    },
+    //{
+    //  name                           = "backend-case-80"
+    //  port                           = 80
+    //  Protocol                       = "Http"
+    //  CookieBasedAffinity            = "Disabled"
+    //  AuthenticationCertificates     = ""
+    //  probeEnabled                   = "True"
+    //  probe                          = "http-case-probe"
+    //  PickHostNameFromBackendAddress = "False"
+    //  HostName                       = "${var.external_hostname_case}"
+    //},
+    //  {
+    //  name                           = "backend-case-443"
+    //  port                           = 443
+    //  Protocol                       = "Https"
+    //  CookieBasedAffinity            = "Disabled"
+    //  AuthenticationCertificates     = "ilbCert"
+    //  probeEnabled                   = "True"
+    //  probe                          = "https-case-probe"
+    //  PickHostNameFromBackendAddress = "False"
+    //  HostName                       = "${var.external_hostname_case}"
+    //},
     {
       name                           = "backend-mo-80"
       port                           = 80
@@ -221,21 +227,21 @@ module "appGw" {
   
   # Request routing rules
   requestRoutingRules = [
+    //{
+    //  name                = "http-case"
+    //  RuleType            = "Basic"
+    //  httpListener        = "http-case-listener"
+    //  backendAddressPool  = "${var.product}-${var.env}"
+    //  backendHttpSettings = "backend-case-80"
+    //},
+    //{
+    //  name                = "https-case"
+    //  RuleType            = "Basic"
+    //  httpListener        = "https-case-listener"
+    //  backendAddressPool  = "${var.product}-${var.env}"
+    //  backendHttpSettings = "backend-case-443"
+    //},
     {
-      name                = "http-case"
-      RuleType            = "Basic"
-      httpListener        = "http-case-listener"
-      backendAddressPool  = "${var.product}-${var.env}"
-      backendHttpSettings = "backend-case-80"
-    },
-    {
-      name                = "https-case"
-      RuleType            = "Basic"
-      httpListener        = "https-case-listener"
-      backendAddressPool  = "${var.product}-${var.env}"
-      backendHttpSettings = "backend-case-443"
-    },
-        {
       name                = "http-mo"
       RuleType            = "Basic"
       httpListener        = "http-mo-listener"
@@ -265,77 +271,31 @@ module "appGw" {
     },
   ]
 
-requestRoutingRulesPathBased = [
-    {
-      name                = "https-mo-reg"
-      RuleType            = "PathBasedRouting"
-      httpListener        = "https-mo-reg-listener"
-      backendAddressPool  = "${var.product}-${var.env}"
-      backendHttpSettings = "backend-mo-reg-443"
-      urlPathMap          = "https-url-path-map-service"
-    },
-    {
-      name                = "http-mo-reg"
-      RuleType            = "PathBasedRouting"
-      httpListener        = "http-mo-reg-listener"
-      backendAddressPool  = "${var.product}-${var.env}"
-      backendHttpSettings = "backend-mo-reg-80"
-      urlPathMap = "http-url-path-map-service"
-    },
-  ]
-
-  urlPathMaps = [
-    {
-      name                       = "http-url-path-map-service"
-      defaultBackendAddressPool  = "${var.product}-${var.env}"
-      defaultBackendHttpSettings = "backend-mo-reg-80"
-      pathRules                 = [
-        {
-          name                = "http-url-path-map-service"
-          paths               = ["/register-org/register","/register-org/register/*" ]
-          backendAddressPool  = "${var.product}-${var.env}"
-          backendHttpSettings = "backend-mo-reg-80"
-        }]
-      },
-    {
-      name                       = "https-url-path-map-service"
-      defaultBackendAddressPool  = "${var.product}-${var.env}"
-      defaultBackendHttpSettings = "backend-mo-reg-443"
-      pathRules                  = [
-        {
-          name                = "https-url-path-map-service"
-          paths               = ["/register-org/register","/register-org/register/*" ]
-          backendAddressPool  = "${var.product}-${var.env}"
-          backendHttpSettings = "backend-mo-reg-443"
-        }]
-    }
-  ]
-
   probes = [
-    {
-      name                                = "http-case-probe"
-      protocol                            = "Http"
-      path                                = "/"
-      interval                            = 30
-      timeout                             = 30
-      unhealthyThreshold                  = 5
-      pickHostNameFromBackendHttpSettings = "false"
-      backendHttpSettings                 = "backend-case-80"
-      host                                = "${var.external_hostname_case}"
-      healthyStatusCodes                  = "200-399"                  #// MS returns 400 on /, allowing more codes in case they change it
-    },
-    {
-      name                                = "https-case-probe"
-      protocol                            = "Https"
-      path                                = "/"
-      interval                            = 30
-      timeout                             = 30
-      unhealthyThreshold                  = 5
-      pickHostNameFromBackendHttpSettings = "false"
-      backendHttpSettings                 = "backend-case-443"
-      host                                = "${var.external_hostname_case}"
-      healthyStatusCodes                  = "200-399"                  #// MS returns 400 on /, allowing more codes in case they change it
-    },
+    //{
+    //  name                                = "http-case-probe"
+    //  protocol                            = "Http"
+    //  path                                = "/"
+    //  interval                            = 30
+    //  timeout                             = 30
+    //  unhealthyThreshold                  = 5
+    //  pickHostNameFromBackendHttpSettings = "false"
+    //  backendHttpSettings                 = "backend-case-80"
+    //  host                                = "${var.external_hostname_case}"
+    //  healthyStatusCodes                  = "200-399"                  #// MS returns 400 on /, allowing more codes in case they change it
+    //},
+    //{
+    //  name                                = "https-case-probe"
+    //  protocol                            = "Https"
+    //  path                                = "/"
+    //  interval                            = 30
+    //  timeout                             = 30
+    //  unhealthyThreshold                  = 5
+    //  pickHostNameFromBackendHttpSettings = "false"
+    //  backendHttpSettings                 = "backend-case-443"
+    //  host                                = "${var.external_hostname_case}"
+    //  healthyStatusCodes                  = "200-399"                  #// MS returns 400 on /, allowing more codes in case they change it
+    //},
     {
       name                                = "http-mo-probe"
       protocol                            = "Http"
