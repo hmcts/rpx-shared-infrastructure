@@ -2,6 +2,7 @@ data "azurerm_key_vault_secret" "cert" {
   name      = "${var.external_ao_cert_name}"
   name      = "${var.external_mo_cert_name}"
   name      = "${var.external_reg_cert_name}"
+  name      = "${var.external_cert_name}"
   vault_uri = "${var.external_cert_vault_uri}"
 }
 
@@ -36,9 +37,10 @@ module "appGw" {
 
   sslCertificates = [
     {
-      name      = "${var.external_ao_cert_name}"
-      name      = "${var.external_mo_cert_name}"
-      name      = "${var.external_reg_cert_name}"
+      name     = "${var.external_ao_cert_name}"
+      name     = "${var.external_mo_cert_name}"
+      name     = "${var.external_reg_cert_name}"
+      name     = "${var.external_cert_name}"
       data     = "${data.azurerm_key_vault_secret.cert.value}"
       password = ""
     },
