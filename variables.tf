@@ -66,8 +66,6 @@ variable "external_cert_vault_uri" {}
 
 variable "external_hostname_mo_reg" {}
 
-variable "external_hostname_mo_reg" {}
-
 variable "external__ao_cert_name" {}
 
 variable "external__mo_cert_name" {}
