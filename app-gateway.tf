@@ -270,30 +270,30 @@ module "appGw" {
   ]
 
   probes = [
-    {
-      name                                = "http-case-probe"
-      protocol                            = "Http"
-      path                                = "/"
-      interval                            = 30
-      timeout                             = 30
-      unhealthyThreshold                  = 5
-      pickHostNameFromBackendHttpSettings = "false"
-      backendHttpSettings                 = "backend-case-80"
-      host                                = "${var.external_hostname_case}"
-      healthyStatusCodes                  = "200-399"                  #// MS returns 400 on /, allowing more codes in case they change it
-    },
-    {
-      name                                = "https-case-probe"
-      protocol                            = "Https"
-      path                                = "/"
-      interval                            = 30
-      timeout                             = 30
-      unhealthyThreshold                  = 5
-      pickHostNameFromBackendHttpSettings = "false"
-      backendHttpSettings                 = "backend-case-443"
-      host                                = "${var.external_hostname_case}"
-      healthyStatusCodes                  = "200-399"                  #// MS returns 400 on /, allowing more codes in case they change it
-    },
+    //{
+    //  name                                = "http-case-probe"
+    //  protocol                            = "Http"
+    //  path                                = "/"
+    //  interval                            = 30
+    //  timeout                             = 30
+    //  unhealthyThreshold                  = 5
+    //  pickHostNameFromBackendHttpSettings = "false"
+    //  backendHttpSettings                 = "backend-case-80"
+    //  host                                = "${var.external_hostname_case}"
+    //  healthyStatusCodes                  = "200-399"                  #// MS returns 400 on /, allowing more codes in case they change it
+    //},
+    //{
+    //  name                                = "https-case-probe"
+    //  protocol                            = "Https"
+    //  path                                = "/"
+    //  interval                            = 30
+    //  timeout                             = 30
+    //  unhealthyThreshold                  = 5
+    //  pickHostNameFromBackendHttpSettings = "false"
+    //  backendHttpSettings                 = "backend-case-443"
+    //  host                                = "${var.external_hostname_case}"
+    //  healthyStatusCodes                  = "200-399"                  #// MS returns 400 on /, allowing more codes in case they change it
+    //},
     {
       name                                = "http-mo-probe"
       protocol                            = "Http"
