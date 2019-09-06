@@ -2,9 +2,9 @@ locals {
   ase_name = "core-compute-${var.env}"
 
   // num of apps * 1 to save cost where we can, * 2 in prod like environments
-  asp_capacity = "${var.env == "prod" || var.env == "sprod" || var.env == "aat" ? 6 : 3}"
-  
-  asp_rd_capacity = "${var.env == "prod" || var.env == "sprod" || var.env == "aat" ? 12 : 6}"
+asp_capacity = "${var.env == "prod" || var.env == "sprod" || var.env == "aat" ? 2 : 2}"
+
+asp_rd_capacity = "${var.env == "prod" || var.env == "sprod" || var.env == "aat" ? 2 : 2}"
 
   asp_anno_capacity = "${var.env == "prod" || var.env == "sprod" || var.env == "aat" ? 2 : 1}"
 
