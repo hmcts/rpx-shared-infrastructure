@@ -1,5 +1,5 @@
 module "key_vault" {
-  source = "git@github.com:contino/moj-module-key-vault?ref=master"
+  source = "git@github.com:hmcts/cnp-module-key-vault?ref=master"
   name = "${var.product}-${var.env}"
   product = "${var.product}"
   env = "${var.env}"
