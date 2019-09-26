@@ -21,7 +21,7 @@ module "appGw" {
   subscription      = "${var.subscription}"
   location          = "${var.location}"
   wafName           = "${var.product}"
-  resourcegroupname = "${azurerm_resource_group.shared_resource_group.name}"
+  resourcegroupname = "${azurerm_resource_group.rg.name}"
   common_tags       = "${var.common_tags}"
 
   # vNet connections
