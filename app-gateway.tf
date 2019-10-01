@@ -265,52 +265,6 @@ module "appGw" {
     },
   ]
 
-requestRoutingRulesPathBased = [
-    {
-      name                = "https-mo-reg"
-      RuleType            = "PathBasedRouting"
-      httpListener        = "https-mo-reg-listener"
-      backendAddressPool  = "${var.product}-${var.env}"
-      backendHttpSettings = "backend-mo-reg-443"
-      urlPathMap          = "https-url-path-map-service"
-    },
-    {
-      name                = "http-mo-reg"
-      RuleType            = "PathBasedRouting"
-      httpListener        = "http-mo-reg-listener"
-      backendAddressPool  = "${var.product}-${var.env}"
-      backendHttpSettings = "backend-mo-reg-80"
-      urlPathMap = "http-url-path-map-service"
-    },
-  ]
-
-  urlPathMaps = [
-    {
-      name                       = "http-url-path-map-service"
-      defaultBackendAddressPool  = "${var.product}-${var.env}"
-      defaultBackendHttpSettings = "backend-mo-reg-80"
-      pathRules                 = [
-        {
-          name                = "http-url-path-map-service"
-          paths               = ["/register-org/register","/register-org/register/*" ]
-          backendAddressPool  = "${var.product}-${var.env}"
-          backendHttpSettings = "backend-mo-reg-80"
-        }]
-      },
-    {
-      name                       = "https-url-path-map-service"
-      defaultBackendAddressPool  = "${var.product}-${var.env}"
-      defaultBackendHttpSettings = "backend-mo-reg-443"
-      pathRules                  = [
-        {
-          name                = "https-url-path-map-service"
-          paths               = ["/register-org/register","/register-org/register/*" ]
-          backendAddressPool  = "${var.product}-${var.env}"
-          backendHttpSettings = "backend-mo-reg-443"
-        }]
-    }
-  ]
-
   probes = [
     {
       name                                = "http-case-probe"
