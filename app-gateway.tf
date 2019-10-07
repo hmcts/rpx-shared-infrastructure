@@ -1,4 +1,4 @@
-data "azurerm_key_vault_secret" "cert" {
+/* data "azurerm_key_vault_secret" "cert" {
   name      = "${var.external_ao_cert_name}"
   name      = "${var.external_mo_cert_name}"
   name      = "${var.external_reg_cert_name}"
@@ -358,3 +358,4 @@ module "appGw" {
     },
   ]
 }
+*/
