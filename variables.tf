@@ -71,3 +71,5 @@ variable "external_ao_cert_name" {}
 variable "external_mo_cert_name" {}
 
 variable "external_reg_cert_name" {}
+
+variable "external_case_cert_name" {}

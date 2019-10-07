@@ -2,7 +2,7 @@ data "azurerm_key_vault_secret" "cert" {
   name      = "${var.external_ao_cert_name}"
   name      = "${var.external_mo_cert_name}"
   name      = "${var.external_reg_cert_name}"
-  name      = "${var.external_cert_name}"
+  name      = "${var.external_case_cert_name}"
   vault_uri = "${var.external_cert_vault_uri}"
 }
 
@@ -52,7 +52,7 @@ module "appGw" {
       password = ""
     },
     {
-      name     = "${var.external_cert_name}"
+      name     = "${var.external_case_cert_name}"
       data     = "${data.azurerm_key_vault_secret.cert.value}"
       password = ""
     },
@@ -60,22 +60,22 @@ module "appGw" {
 
   # Http Listeners
   httpListeners = [
-    //{
-    //  name                    = "http-case-listener"
-    //  FrontendIPConfiguration = "appGatewayFrontendIP"
-    //  FrontendPort            = "frontendPort80"
-    //  Protocol                = "Http"
-    //  SslCertificate          = ""
-    //  hostName                = "${var.external_hostname_case}"
-    //},
-    //{
-    //  name                    = "https-case-listener"
-    //  FrontendIPConfiguration = "appGatewayFrontendIP"
-    //  FrontendPort            = "frontendPort443"
-    //  Protocol                = "Https"
-    //  SslCertificate          = "${var.external_cert_name}"
-    //  hostName                = "${var.external_hostname_case}"
-    //},
+    {
+      name                    = "http-case-listener"
+      FrontendIPConfiguration = "appGatewayFrontendIP"
+      FrontendPort            = "frontendPort80"
+      Protocol                = "Http"
+      SslCertificate          = ""
+      hostName                = "${var.external_hostname_case}"
+    },
+    {
+      name                    = "https-case-listener"
+      FrontendIPConfiguration = "appGatewayFrontendIP"
+      FrontendPort            = "frontendPort443"
+      Protocol                = "Https"
+      SslCertificate          = "${var.external_case_cert_name}"
+      hostName                = "${var.external_hostname_case}"
+    },
     {
       name                    = "http-mo-listener"
       FrontendIPConfiguration = "appGatewayFrontendIP"
@@ -147,28 +147,28 @@ module "appGw" {
   
   use_authentication_cert = true
   backendHttpSettingsCollection = [
-    //{
-    //  name                           = "backend-case-80"
-    //  port                           = 80
-    //  Protocol                       = "Http"
-    //  CookieBasedAffinity            = "Disabled"
-    //  AuthenticationCertificates     = ""
-    //  probeEnabled                   = "True"
-    //  probe                          = "http-case-probe"
-    //  PickHostNameFromBackendAddress = "False"
-    //  HostName                       = "${var.external_hostname_case}"
-    //},
-    //  {
-    //  name                           = "backend-case-443"
-    //  port                           = 443
-    //  Protocol                       = "Https"
-    //  CookieBasedAffinity            = "Disabled"
-    //  AuthenticationCertificates     = "ilbCert"
-    //  probeEnabled                   = "True"
-    //  probe                          = "https-case-probe"
-    //  PickHostNameFromBackendAddress = "False"
-    //  HostName                       = "${var.external_hostname_case}"
-    //},
+    {
+      name                           = "backend-case-80"
+      port                           = 80
+      Protocol                       = "Http"
+      CookieBasedAffinity            = "Disabled"
+      AuthenticationCertificates     = ""
+      probeEnabled                   = "True"
+      probe                          = "http-case-probe"
+      PickHostNameFromBackendAddress = "False"
+      HostName                       = "${var.external_hostname_case}"
+    },
+      {
+      name                           = "backend-case-443"
+      port                           = 443
+      Protocol                       = "Https"
+      CookieBasedAffinity            = "Disabled"
+      AuthenticationCertificates     = "ilbCert"
+      probeEnabled                   = "True"
+      probe                          = "https-case-probe"
+      PickHostNameFromBackendAddress = "False"
+      HostName                       = "${var.external_hostname_case}"
+    },
     {
       name                           = "backend-mo-80"
       port                           = 80
@@ -239,20 +239,20 @@ module "appGw" {
   
   # Request routing rules
   requestRoutingRules = [
-    //{
-    //  name                = "http-case"
-    //  RuleType            = "Basic"
-    //  httpListener        = "http-case-listener"
-    //  backendAddressPool  = "${var.product}-${var.env}"
-    //  backendHttpSettings = "backend-case-80"
-    //},
-    //{
-    //  name                = "https-case"
-    //  RuleType            = "Basic"
-    //  httpListener        = "https-case-listener"
-    //  backendAddressPool  = "${var.product}-${var.env}"
-    //  backendHttpSettings = "backend-case-443"
-    //},
+    {
+      name                = "http-case"
+      RuleType            = "Basic"
+      httpListener        = "http-case-listener"
+      backendAddressPool  = "${var.product}-${var.env}"
+      backendHttpSettings = "backend-case-80"
+    },
+    {
+      name                = "https-case"
+      RuleType            = "Basic"
+      httpListener        = "https-case-listener"
+      backendAddressPool  = "${var.product}-${var.env}"
+      backendHttpSettings = "backend-case-443"
+    },
     {
       name                = "http-mo"
       RuleType            = "Basic"
@@ -284,30 +284,30 @@ module "appGw" {
   ]
 
   probes = [
-    //{
-    //  name                                = "http-case-probe"
-    //  protocol                            = "Http"
-    //  path                                = "/"
-    //  interval                            = 30
-    //  timeout                             = 30
-    //  unhealthyThreshold                  = 5
-    //  pickHostNameFromBackendHttpSettings = "false"
-    //  backendHttpSettings                 = "backend-case-80"
-    //  host                                = "${var.external_hostname_case}"
-    //  healthyStatusCodes                  = "200-399"                  #// MS returns 400 on /, allowing more codes in case they change it
-    //},
-    //{
-    //  name                                = "https-case-probe"
-    //  protocol                            = "Https"
-    //  path                                = "/"
-    //  interval                            = 30
-    //  timeout                             = 30
-    //  unhealthyThreshold                  = 5
-    //  pickHostNameFromBackendHttpSettings = "false"
-    //  backendHttpSettings                 = "backend-case-443"
-    //  host                                = "${var.external_hostname_case}"
-    //  healthyStatusCodes                  = "200-399"                  #// MS returns 400 on /, allowing more codes in case they change it
-    //},
+    {
+      name                                = "http-case-probe"
+      protocol                            = "Http"
+      path                                = "/"
+      interval                            = 30
+      timeout                             = 30
+      unhealthyThreshold                  = 5
+      pickHostNameFromBackendHttpSettings = "false"
+      backendHttpSettings                 = "backend-case-80"
+      host                                = "${var.external_hostname_case}"
+      healthyStatusCodes                  = "200-399"                  #// MS returns 400 on /, allowing more codes in case they change it
+    },
+    {
+      name                                = "https-case-probe"
+      protocol                            = "Https"
+      path                                = "/"
+      interval                            = 30
+      timeout                             = 30
+      unhealthyThreshold                  = 5
+      pickHostNameFromBackendHttpSettings = "false"
+      backendHttpSettings                 = "backend-case-443"
+      host                                = "${var.external_hostname_case}"
+      healthyStatusCodes                  = "200-399"                  #// MS returns 400 on /, allowing more codes in case they change it
+    },
     {
       name                                = "http-mo-probe"
       protocol                            = "Http"
