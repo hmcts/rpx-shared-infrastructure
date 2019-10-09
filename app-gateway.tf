@@ -1,7 +1,19 @@
-data "azurerm_key_vault_secret" "cert" {
+data "azurerm_key_vault_secret" "ao_cert" {
   name      = "${var.external_ao_cert_name}"
+  vault_uri = "${var.external_cert_vault_uri}"
+}
+
+data "azurerm_key_vault_secret" "mo_cert" {
   name      = "${var.external_mo_cert_name}"
+  vault_uri = "${var.external_cert_vault_uri}"
+}
+
+data "azurerm_key_vault_secret" "reg_cert" {
   name      = "${var.external_reg_cert_name}"
+  vault_uri = "${var.external_cert_vault_uri}"
+}
+
+data "azurerm_key_vault_secret" "case_cert" {
   name      = "${var.external_case_cert_name}"
   vault_uri = "${var.external_cert_vault_uri}"
 }
@@ -38,22 +50,22 @@ module "appGw" {
   sslCertificates = [
     {
       name     = "${var.external_ao_cert_name}"
-      data     = "${data.azurerm_key_vault_secret.cert.value}"
+      data     = "${data.azurerm_key_vault_secret.ao_cert.value}"
       password = ""
     },
     {
       name     = "${var.external_mo_cert_name}"
-      data     = "${data.azurerm_key_vault_secret.cert.value}"
+      data     = "${data.azurerm_key_vault_secret.mo_cert.value}"
       password = ""
     },
     {
       name     = "${var.external_reg_cert_name}"
-      data     = "${data.azurerm_key_vault_secret.cert.value}"
+      data     = "${data.azurerm_key_vault_secret.reg_cert.value}"
       password = ""
     },
     {
       name     = "${var.external_case_cert_name}"
-      data     = "${data.azurerm_key_vault_secret.cert.value}"
+      data     = "${data.azurerm_key_vault_secret.case_cert.value}"
       password = ""
     },
   ]
@@ -108,7 +120,7 @@ module "appGw" {
       SslCertificate          = "${var.external_ao_cert_name}"
       hostName                = "${var.external_hostname_ao}"
     },
-        {
+    {
       name                    = "http-mo-reg-listener"
       FrontendIPConfiguration = "appGatewayFrontendIP"
       FrontendPort            = "frontendPort80"
