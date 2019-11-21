@@ -8,6 +8,7 @@ module "key_vault" {
   resource_group_name = "${azurerm_resource_group.rg.name}"
   product_group_object_id = "5d9cd025-a293-4b97-a0e5-6f43efce02c0"
   common_tags = "${local.tags}"
+  managed_identity_object_id  = "${var.managed_identity_object_id}"
 }
 
 output "vaultName" {
