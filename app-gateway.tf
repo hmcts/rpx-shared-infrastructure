@@ -293,6 +293,20 @@ module "appGw" {
       backendAddressPool  = "${var.product}-${var.env}"
       backendHttpSettings = "backend-ao-443"
     },
+    {
+      name                = "http-mo-reg"
+      RuleType            = "Basic"
+      httpListener        = "http-mo-reg-listener"
+      backendAddressPool  = "${var.product}-${var.env}"
+      backendHttpSettings = "backend-mo-reg-80"  
+    },
+    {
+      name                = "https-mo-reg"
+      RuleType            = "Basic"
+      httpListener        = "https-mo-reg-listener"
+      backendAddressPool  = "${var.product}-${var.env}"
+      backendHttpSettings = "backend-mo-reg-443"  
+    },
   ]
 
   probes = [
