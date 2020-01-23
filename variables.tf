@@ -65,3 +65,7 @@ variable "external_hostname_www" {}
 variable "external_cert_vault_uri" {}
 
 variable "external_hostname_mo_reg" {}
+
+variable "managed_identity_object_id" {
+  default = ""
+}
