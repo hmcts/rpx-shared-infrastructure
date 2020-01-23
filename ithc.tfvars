@@ -1,5 +1,4 @@
 external_cert_vault_uri = "https://infra-vault-qa.vault.azure.net/"
-
 external_hostname_ao = "administer-orgs.ithc.platform.hmcts.net"
 external_cert_name = "wildcard-ithc-platform-hmcts-net"
 external_hostname_www = ""

@@ -2,11 +2,4 @@
 //noinspection GroovyUnusedAssignment
 @Library("Infrastructure") _
 
-def product = 'rpx'
-
-withInfraPipeline(product) {
-}
-
-onMaster {
-
-}
+withInfraPipeline("rpx") {}

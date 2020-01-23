@@ -1,13 +1,28 @@
-data "azurerm_key_vault_secret" "cert" {
-  name      = "${var.external_cert_name}"
+data "azurerm_key_vault_secret" "ao_cert" {
+  name      = "${var.external_ao_cert_name}"
+  vault_uri = "${var.external_cert_vault_uri}"
+}
+
+data "azurerm_key_vault_secret" "mo_cert" {
+  name      = "${var.external_mo_cert_name}"
+  vault_uri = "${var.external_cert_vault_uri}"
+}
+
+data "azurerm_key_vault_secret" "reg_cert" {
+  name      = "${var.external_reg_cert_name}"
+  vault_uri = "${var.external_cert_vault_uri}"
+}
+
+data "azurerm_key_vault_secret" "case_cert" {
+  name      = "${var.external_case_cert_name}"
   vault_uri = "${var.external_cert_vault_uri}"
 }
 
 locals {
 
- xui_suffix  = "${var.env != "prod" ? "-webapp" : ""}"
+xui_suffix  = "${var.env != "prod" ? "-webapp" : ""}"
 
- webapp_internal_hostname_case  = "xui-webapp-${var.env}.service.core-compute-${var.env}.internal"
+webapp_internal_hostname_case  = "xui-webapp-${var.env}.service.core-compute-${var.env}.internal"
 
 webapp_internal_hostname_ao  = "xui-mo-webapp-${var.env}.service.core-compute-${var.env}.internal"
 
@@ -34,8 +49,23 @@ module "appGw" {
 
   sslCertificates = [
     {
-      name     = "${var.external_cert_name}"
-      data     = "${data.azurerm_key_vault_secret.cert.value}"
+      name     = "${var.external_ao_cert_name}"
+      data     = "${data.azurerm_key_vault_secret.ao_cert.value}"
+      password = ""
+    },
+    {
+      name     = "${var.external_mo_cert_name}"
+      data     = "${data.azurerm_key_vault_secret.mo_cert.value}"
+      password = ""
+    },
+    {
+      name     = "${var.external_reg_cert_name}"
+      data     = "${data.azurerm_key_vault_secret.reg_cert.value}"
+      password = ""
+    },
+    {
+      name     = "${var.external_case_cert_name}"
+      data     = "${data.azurerm_key_vault_secret.case_cert.value}"
       password = ""
     },
   ]
@@ -55,7 +85,7 @@ module "appGw" {
       FrontendIPConfiguration = "appGatewayFrontendIP"
       FrontendPort            = "frontendPort443"
       Protocol                = "Https"
-      SslCertificate          = "${var.external_cert_name}"
+      SslCertificate          = "${var.external_case_cert_name}"
       hostName                = "${var.external_hostname_case}"
     },
     {
@@ -71,7 +101,7 @@ module "appGw" {
       FrontendIPConfiguration = "appGatewayFrontendIP"
       FrontendPort            = "frontendPort443"
       Protocol                = "Https"
-      SslCertificate          = "${var.external_cert_name}"
+      SslCertificate          = "${var.external_mo_cert_name}"
       hostName                = "${var.external_hostname_mo}"
     },
     {
@@ -87,10 +117,10 @@ module "appGw" {
       FrontendIPConfiguration = "appGatewayFrontendIP"
       FrontendPort            = "frontendPort443"
       Protocol                = "Https"
-      SslCertificate          = "${var.external_cert_name}"
+      SslCertificate          = "${var.external_ao_cert_name}"
       hostName                = "${var.external_hostname_ao}"
     },
-        {
+    {
       name                    = "http-mo-reg-listener"
       FrontendIPConfiguration = "appGatewayFrontendIP"
       FrontendPort            = "frontendPort80"
@@ -103,7 +133,7 @@ module "appGw" {
       FrontendIPConfiguration = "appGatewayFrontendIP"
       FrontendPort            = "frontendPort443"
       Protocol                = "Https"
-      SslCertificate          = "${var.external_cert_name}"
+      SslCertificate          = "${var.external_reg_cert_name}"
       hostName                = "${var.external_hostname_mo_reg}"
     },
   ]
@@ -235,7 +265,7 @@ module "appGw" {
       backendAddressPool  = "${var.product}-${var.env}"
       backendHttpSettings = "backend-case-443"
     },
-        {
+    {
       name                = "http-mo"
       RuleType            = "Basic"
       httpListener        = "http-mo-listener"
@@ -262,6 +292,20 @@ module "appGw" {
       httpListener        = "https-ao-listener"
       backendAddressPool  = "${var.product}-${var.env}"
       backendHttpSettings = "backend-ao-443"
+    },
+    {
+      name                = "http-mo-reg"
+      RuleType            = "Basic"
+      httpListener        = "http-mo-reg-listener"
+      backendAddressPool  = "${var.product}-${var.env}"
+      backendHttpSettings = "backend-mo-reg-80"  
+    },
+    {
+      name                = "https-mo-reg"
+      RuleType            = "Basic"
+      httpListener        = "https-mo-reg-listener"
+      backendAddressPool  = "${var.product}-${var.env}"
+      backendHttpSettings = "backend-mo-reg-443"  
     },
   ]
 
