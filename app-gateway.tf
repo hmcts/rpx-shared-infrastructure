@@ -147,12 +147,6 @@ module "appGw" {
         {
           ipAddress = "${var.ilbIp}"
         },
-        {
-          ipAddress = "${var.ilbIp}"
-        },
-        {
-          ipAddress = "${var.ilbIp}"
-        },
       ]
     },
   ]
