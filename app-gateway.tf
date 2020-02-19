@@ -145,13 +145,7 @@ module "appGw" {
 
       backendAddresses = [
         {
-          ipAddress = "${local.webapp_internal_hostname_case}"
-        },
-        {
-          ipAddress = "${local.webapp_internal_hostname_ao}"
-        },
-        {
-          ipAddress = "${local.webapp_internal_hostname_mo}"
+          ipAddress = "${var.ilbIp}"
         },
       ]
     },
