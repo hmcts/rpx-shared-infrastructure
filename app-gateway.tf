@@ -31,7 +31,7 @@ webapp_internal_hostname_mo  = "xui-ao-webapp-${var.env}.service.core-compute-${
 }
 
 module "appGw" {
-  source            = "git@github.com:hmcts/cnp-module-waf?ref=master"
+  source            = "git@github.com:hmcts/cnp-module-waf?ref=xui-waf-rules"
   env               = "${var.env}"
   subscription      = "${var.subscription}"
   location          = "${var.location}"
