@@ -13,6 +13,11 @@ data "azurerm_key_vault_secret" "reg_cert" {
   vault_uri = "${var.external_cert_vault_uri}"
 }
 
+data "azurerm_key_vault_secret" "jui_cert" {
+  name      = "${var.external_jui_cert_name}"
+  vault_uri = "${var.external_cert_vault_uri}"
+}
+
 data "azurerm_key_vault_secret" "case_cert" {
   name      = "${var.external_case_cert_name}"
   vault_uri = "${var.external_cert_vault_uri}"
@@ -68,6 +73,11 @@ module "appGw" {
       data     = "${data.azurerm_key_vault_secret.case_cert.value}"
       password = ""
     },
+    {
+      name     = "${var.external_jui_cert_name}"
+      data     = "${data.azurerm_key_vault_secret.jui_cert.value}"
+      password = ""
+    },
   ]
 
   # Http Listeners
@@ -87,6 +97,22 @@ module "appGw" {
       Protocol                = "Https"
       SslCertificate          = "${var.external_case_cert_name}"
       hostName                = "${var.external_hostname_case}"
+    },
+    {
+      name                    = "http-jui-listener"
+      FrontendIPConfiguration = "appGatewayFrontendIP"
+      FrontendPort            = "frontendPort80"
+      Protocol                = "Http"
+      SslCertificate          = ""
+      hostName                = "${var.external_hostname_jui}"
+    },
+    {
+      name                    = "https-jui-listener"
+      FrontendIPConfiguration = "appGatewayFrontendIP"
+      FrontendPort            = "frontendPort443"
+      Protocol                = "Https"
+      SslCertificate          = "${var.external_jui_cert_name}"
+      hostName                = "${var.external_hostname_jui}"
     },
     {
       name                    = "http-mo-listener"
@@ -176,6 +202,28 @@ module "appGw" {
       HostName                       = "${var.external_hostname_case}"
     },
     {
+      name                           = "backend-jui-80"
+      port                           = 80
+      Protocol                       = "Http"
+      CookieBasedAffinity            = "Disabled"
+      AuthenticationCertificates     = ""
+      probeEnabled                   = "True"
+      probe                          = "http-jui-probe"
+      PickHostNameFromBackendAddress = "False"
+      HostName                       = "${var.external_hostname_jui}"
+    },
+      {
+      name                           = "backend-jui-443"
+      port                           = 443
+      Protocol                       = "Https"
+      CookieBasedAffinity            = "Disabled"
+      AuthenticationCertificates     = "ilbCert"
+      probeEnabled                   = "True"
+      probe                          = "https-jui-probe"
+      PickHostNameFromBackendAddress = "False"
+      HostName                       = "${var.external_hostname_jui}"
+    },
+    {
       name                           = "backend-mo-80"
       port                           = 80
       Protocol                       = "Http"
@@ -260,6 +308,20 @@ module "appGw" {
       backendHttpSettings = "backend-case-443"
     },
     {
+      name                = "http-jui"
+      RuleType            = "Basic"
+      httpListener        = "http-jui-listener"
+      backendAddressPool  = "${var.product}-${var.env}"
+      backendHttpSettings = "backend-jui-80"
+    },
+    {
+      name                = "https-jui"
+      RuleType            = "Basic"
+      httpListener        = "https-jui-listener"
+      backendAddressPool  = "${var.product}-${var.env}"
+      backendHttpSettings = "backend-jui-443"
+    },
+    {
       name                = "http-mo"
       RuleType            = "Basic"
       httpListener        = "http-mo-listener"
@@ -326,6 +388,30 @@ module "appGw" {
       pickHostNameFromBackendHttpSettings = "false"
       backendHttpSettings                 = "backend-case-443"
       host                                = "${var.external_hostname_case}"
+      healthyStatusCodes                  = "200-399"                  #// MS returns 400 on /, allowing more codes in case they change it
+    },
+    {
+      name                                = "http-jui-probe"
+      protocol                            = "Http"
+      path                                = "/"
+      interval                            = 30
+      timeout                             = 30
+      unhealthyThreshold                  = 5
+      pickHostNameFromBackendHttpSettings = "false"
+      backendHttpSettings                 = "backend-jui-80"
+      host                                = "${var.external_hostname_jui}"
+      healthyStatusCodes                  = "200-399"                  #// MS returns 400 on /, allowing more codes in case they change it
+    },
+    {
+      name                                = "https-jui-probe"
+      protocol                            = "Https"
+      path                                = "/"
+      interval                            = 30
+      timeout                             = 30
+      unhealthyThreshold                  = 5
+      pickHostNameFromBackendHttpSettings = "false"
+      backendHttpSettings                 = "backend-jui-443"
+      host                                = "${var.external_hostname_jui}"
       healthyStatusCodes                  = "200-399"                  #// MS returns 400 on /, allowing more codes in case they change it
     },
     {

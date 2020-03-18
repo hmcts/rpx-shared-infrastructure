@@ -60,6 +60,8 @@ variable "external_hostname_mo" {}
 
 variable "external_hostname_case" {}
 
+variable "external_hostname_jui" {}
+
 variable "external_hostname_www" {}
 
 variable "external_cert_vault_uri" {}
@@ -73,6 +75,8 @@ variable "external_mo_cert_name" {}
 variable "external_reg_cert_name" {}
 
 variable "external_case_cert_name" {}
+
+variable "external_jui_cert_name" {}
 
 variable "managed_identity_object_id" {
   default = ""
