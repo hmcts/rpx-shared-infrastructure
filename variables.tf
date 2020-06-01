@@ -50,30 +50,4 @@ variable "asp_capacity" {
   default = 2
 }
 
-variable "ilbIp" {}
-
-variable "external_cert_name" {}
-
-variable "external_hostname_ao" {}
-
-variable "external_hostname_mo" {}
-
-variable "external_hostname_case" {}
-
-variable "external_hostname_www" {}
-
-variable "external_cert_vault_uri" {}
-
-variable "external_hostname_mo_reg" {}
-
-variable "external_ao_cert_name" {}
-
-variable "external_mo_cert_name" {}
-
-variable "external_reg_cert_name" {}
-
-variable "external_case_cert_name" {}
-
-variable "managed_identity_object_id" {
-  default = ""
-}
+variable "managed_identity_object_id" {}

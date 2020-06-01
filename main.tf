@@ -12,5 +12,5 @@ resource "azurerm_resource_group" "rg" {
 }
 
 provider "azurerm" {
-  version = "1.22.1"
+  version = "1.44.0"
 }
