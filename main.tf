@@ -11,5 +11,5 @@ resource "azurerm_resource_group" "rg" {
 }
 
 provider "azurerm" {
-  feature {}
+  features {}
 }
