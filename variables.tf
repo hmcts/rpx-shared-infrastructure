@@ -1,7 +1,6 @@
 variable "product" {}
 
 variable "location" {
-  type = "string"
   default = "UK South"
 }
 
@@ -19,8 +18,7 @@ variable "common_tags" {
 variable "env" {}
 
 variable "application_type" {
-  type        = "string"
-  default     = "Web"
+  default     = "web"
   description = "Type of Application Insights (Web/Other)"
 }
 
@@ -44,10 +42,6 @@ variable "team_contact" {
 
 variable "name" {
   default = false
-}
-
-variable "asp_capacity" {
-  default = 2
 }
 
 variable "managed_identity_object_id" {}
