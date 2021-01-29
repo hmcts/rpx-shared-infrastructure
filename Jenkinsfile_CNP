@@ -2,4 +2,9 @@
 //noinspection GroovyUnusedAssignment
 @Library("Infrastructure") _
 
-withInfraPipeline("rpx") {}
+withInfraPipeline("rpx") {
+ onEthosldata {
+    env.TF_STATE_STORAGE_TEMPLATE = 'statestore'
+    env.TF_STATE_CONTAINER_TEMPLATE = 'statectr'
+  }
+}
