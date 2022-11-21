@@ -12,7 +12,3 @@ resource "azurerm_resource_group" "rg" {
 
   tags = local.tags
 }
-
-provider "azurerm" {
-  features {}
-}
