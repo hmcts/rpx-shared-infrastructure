@@ -14,6 +14,6 @@ resource "azurerm_application_insights" "appinsights" {
   }
 }
 
-output "appInsightsInstrumentationKey" {
-  value = azurerm_application_insights.appinsights.instrumentation_key
-}
+# output "appInsightsInstrumentationKey" {
+#   value = azurerm_application_insights.appinsights.instrumentation_key
+# }
