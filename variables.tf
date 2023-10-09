@@ -4,12 +4,6 @@ variable "location" {
   default = "UK South"
 }
 
-// as of now, UK South is unavailable for Application Insights
-variable "appinsights_location" {
-  default     = "West Europe"
-  description = "Location for Application Insights"
-}
-
 variable "common_tags" {
   type = map(string)
 }
