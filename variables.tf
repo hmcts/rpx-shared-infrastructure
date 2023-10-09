@@ -42,5 +42,3 @@ variable "team_contact" {
 variable "name" {
   default = false
 }
-
-variable "managed_identity_object_id" {}
