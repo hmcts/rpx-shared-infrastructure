@@ -36,3 +36,9 @@ variable "team_contact" {
 variable "name" {
   default = false
 }
+
+variable "additional_managed_identities_access" {
+  type        = list(string)
+  description = "The name of your application"
+  default     = []
+}
