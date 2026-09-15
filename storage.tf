@@ -37,12 +37,28 @@ resource "azurerm_storage_management_policy" "ci_evidence" {
 
     filters {
       blob_types   = ["blockBlob"]
-      prefix_match = ["reports/"]
+      prefix_match = ["reports/90d/"]
     }
 
     actions {
       base_blob {
         delete_after_days_since_modification_greater_than = 90
+      }
+    }
+  }
+
+  rule {
+    name    = "delete-release-reports-after-365-days"
+    enabled = true
+
+    filters {
+      blob_types   = ["blockBlob"]
+      prefix_match = ["reports/365d/"]
+    }
+
+    actions {
+      base_blob {
+        delete_after_days_since_modification_greater_than = 365
       }
     }
   }
