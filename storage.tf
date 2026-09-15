@@ -1,3 +1,15 @@
+data "azurerm_subnet" "ci_evidence_private_endpoint" {
+  resource_group_name  = "core-infra-${var.env}"
+  virtual_network_name = "core-infra-vnet-${var.env}"
+  name                 = "scan-storage"
+}
+
+data "azurerm_subnet" "ci_evidence_aks" {
+  resource_group_name  = "core-infra-${var.env}"
+  virtual_network_name = "core-infra-vnet-${var.env}"
+  name                 = "aks"
+}
+
 module "ci_evidence_storage" {
   source = "git@github.com:hmcts/cnp-module-storage-account?ref=feature/xui-blob-shared-key"
 
@@ -17,12 +29,10 @@ module "ci_evidence_storage" {
   shared_access_key_enabled     = false
   public_network_access_enabled = false
   default_action                = "Deny"
-  sa_subnets = [
-    "/subscriptions/1c4f0704-a29e-403d-b719-b90c34ef14c9/resourceGroups/core-infra-aat/providers/Microsoft.Network/virtualNetworks/core-infra-vnet-aat/subnets/aks"
-  ]
-  private_endpoint_subnet_id = "/subscriptions/1c4f0704-a29e-403d-b719-b90c34ef14c9/resourceGroups/core-infra-aat/providers/Microsoft.Network/virtualNetworks/core-infra-vnet-aat/subnets/scan-storage"
-  managed_identity_object_id = data.azurerm_user_assigned_identity.jenkins.principal_id
-  role_assignments           = ["Storage Blob Data Contributor"]
+  sa_subnets                    = [data.azurerm_subnet.ci_evidence_aks.id]
+  private_endpoint_subnet_id    = data.azurerm_subnet.ci_evidence_private_endpoint.id
+  managed_identity_object_id    = data.azurerm_user_assigned_identity.jenkins.principal_id
+  role_assignments              = ["Storage Blob Data Contributor"]
 }
 
 resource "azurerm_storage_management_policy" "ci_evidence" {
