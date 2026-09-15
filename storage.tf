@@ -1,11 +1,19 @@
+locals {
+  ci_evidence_enabled = var.env == "aat"
+}
+
 data "azurerm_subnet" "ci_evidence_private_endpoint" {
+  count = local.ci_evidence_enabled ? 1 : 0
+
   resource_group_name  = "core-infra-${var.env}"
   virtual_network_name = "core-infra-vnet-${var.env}"
   name                 = "scan-storage"
 }
 
 module "ci_evidence_storage" {
-  source = "git@github.com:hmcts/cnp-module-storage-account?ref=feature/xui-blob-shared-key"
+  count = local.ci_evidence_enabled ? 1 : 0
+
+  source = "git@github.com:hmcts/cnp-module-storage-account?ref=4.x"
 
   env                      = var.env
   storage_account_name     = "xuicireports${var.env}01"
@@ -19,17 +27,21 @@ module "ci_evidence_storage" {
     { name = "reports", access_type = "private" },
     { name = "summaries", access_type = "private" }
   ]
-  enable_data_protection        = false
+  enable_data_protection        = true
+  enable_versioning             = false
+  retention_period              = 7
   shared_access_key_enabled     = false
   public_network_access_enabled = false
   default_action                = "Deny"
-  private_endpoint_subnet_id    = data.azurerm_subnet.ci_evidence_private_endpoint.id
+  private_endpoint_subnet_id    = data.azurerm_subnet.ci_evidence_private_endpoint[0].id
   managed_identity_object_id    = data.azurerm_user_assigned_identity.jenkins.principal_id
   role_assignments              = ["Storage Blob Data Contributor"]
 }
 
 resource "azurerm_storage_management_policy" "ci_evidence" {
-  storage_account_id = module.ci_evidence_storage.storageaccount_id
+  count = local.ci_evidence_enabled ? 1 : 0
+
+  storage_account_id = module.ci_evidence_storage[0].storageaccount_id
 
   rule {
     name    = "delete-reports-after-90-days"
@@ -81,5 +93,5 @@ resource "azurerm_storage_management_policy" "ci_evidence" {
 }
 
 output "ci_evidence_storage_account_name" {
-  value = module.ci_evidence_storage.storageaccount_name
+  value = try(module.ci_evidence_storage[0].storageaccount_name, null)
 }
